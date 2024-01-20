@@ -1,0 +1,77 @@
+package at.mtxframe.eridiumeconomy.backpack;
+
+import at.mtxframe.eridiumeconomy.utils.MapPopulators;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+
+import java.util.List;
+
+public class BackPackSelector implements CommandExecutor {
+    public Boolean isActiveBackPack = false;
+    MapPopulators mapPopulators = new MapPopulators();
+    BackPackGui backPackGui = new BackPackGui();
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            if (player.isOp() || player.hasPermission("eridiumrpg.backpack")) {
+
+                    PersistentDataContainer psd = player.getPersistentDataContainer();
+                    String backPackKey = psd.get(BackPackUtils.backPackKey, PersistentDataType.STRING);
+                    switch (backPackKey) {
+                        case BackPackUtils.noActiveBackPack:
+                            backPackGui.backPackSelector(player, mapPopulators.getSelectorItems());
+                            player.sendMessage("Debug: BackPackSelector angefragt");
+                            break;
+
+                        case BackPackUtils.minerBackPack:
+                            backPackGui.openBackPack(player, mapPopulators.getBackpackMining());
+                            player.sendMessage("Debug: BackPackMiner angefragt");
+                            break;
+
+                        case BackPackUtils.farmerBackPack:
+                            backPackGui.openBackPack(player,mapPopulators.getBackpackFarming());
+                            player.sendMessage("DEBUG: BackPackFarmer angefragt");
+                            break;
+
+                        case BackPackUtils.fisherBackPack:
+                            //TODO: Fischer entwerfen
+                            player.sendMessage("Noch nicht vorhanden");
+                            break;
+
+                        case BackPackUtils.woodcutterBackPack:
+                            backPackGui.openBackPack(player,mapPopulators.getBackpackWoodcutting());
+                            player.sendMessage("Noch nicht vorhanden");
+                            break;
+
+                        case BackPackUtils.hunterBackPack:
+                            player.sendMessage("Noch nicht vorhanden");
+                            break;
+
+                        default:
+                            break;
+                    }
+
+            }else {
+
+                player.sendMessage("Keine permission (Persmission Messages programmieren)");
+            }
+        }
+        return true;
+    }
+
+
+
+}
+
+
+
+
+
