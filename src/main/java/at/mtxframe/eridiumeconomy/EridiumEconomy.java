@@ -9,8 +9,8 @@ import at.mtxframe.eridiumeconomy.userinterface.*;
 import at.mtxframe.eridiumeconomy.utils.MapPopulators;
 import at.mtxframe.mtxframe.MtxFrame;
 import at.mtxframe.mtxframe.database.DatabaseConnection;
+import at.mtxframe.mtxframe.database.handlers.DbJobsHandler;
 import at.mtxframe.mtxframe.economy.BalanceHandler;
-import at.mtxframe.mtxframe.handlers.DbJobsHandler;
 import at.mtxframe.mtxframe.models.PlayerJobStatModel;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -91,7 +91,6 @@ public final class EridiumEconomy extends JavaPlugin {
         getCommand("jobfisher").setExecutor(new FisherGui(this));
         getCommand("pay").setExecutor(new PayCommand(this));
         getCommand("backpack").setExecutor(new BackPackSelector());
-
 
         //EConomy Hook?
 

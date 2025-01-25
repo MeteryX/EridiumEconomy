@@ -17,6 +17,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class FarmingListener implements Listener {
     EridiumEconomy plugin;
@@ -32,7 +33,7 @@ public class FarmingListener implements Listener {
     @EventHandler
     public void onBlockbreak(BlockBreakEvent event) throws SQLException {
         Player player = event.getPlayer();
-        HashMap<UUID, Long> lastBlockBreak = handler.getLastBlockBreakTime();
+        ConcurrentHashMap<UUID, Long> lastBlockBreak = handler.getLastBlockBreakTime();
         lastBlockBreak.put(player.getUniqueId(),System.currentTimeMillis());
         handler.setLastBlockBreakTime(lastBlockBreak);
         Block block = event.getBlock();
@@ -45,9 +46,6 @@ public class FarmingListener implements Listener {
                 checkForAbove(block, material, player);
             }
         } //TESTING
-        else if (material.equals(Material.SAND)){
-            handler.addMoneyPlayer(player,00.25);
-        }
 
         //TESTING
     }

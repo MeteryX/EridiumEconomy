@@ -99,6 +99,7 @@ public class MapPopulators {
         huntingEntities.put(EntityType.POLAR_BEAR,0.43);
         huntingEntities.put(EntityType.SILVERFISH,0.43);
         huntingEntities.put(EntityType.SNIFFER,0.43);
+        huntingEntities.put(EntityType.CHICKEN,0.43);
         //Todo: Nether Job erstellen
         huntingEntities.put(EntityType.STRIDER,0.43);
         huntingEntities.put(EntityType.TRADER_LLAMA,0.43);

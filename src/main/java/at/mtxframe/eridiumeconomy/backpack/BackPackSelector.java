@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.io.IOException;
 import java.util.List;
 
 public class BackPackSelector implements CommandExecutor {
@@ -32,26 +33,59 @@ public class BackPackSelector implements CommandExecutor {
                             break;
 
                         case BackPackUtils.minerBackPack:
-                            backPackGui.openBackPack(player, mapPopulators.getBackpackMining());
+                            if (!psd.has(BackPackUtils.getBackPackItemsKey(),PersistentDataType.STRING)){
+                                psd.set(BackPackUtils.getBackPackItemsKey(),PersistentDataType.STRING,BackPackUtils.getEmptyBackPack());
+                            }
+                            try {
+                                backPackGui.openBackPack(player, mapPopulators.getBackpackMining());
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            } catch (ClassNotFoundException e) {
+                                throw new RuntimeException(e);
+                            }
                             player.sendMessage("Debug: BackPackMiner angefragt");
                             break;
 
                         case BackPackUtils.farmerBackPack:
-                            backPackGui.openBackPack(player,mapPopulators.getBackpackFarming());
+                            if (!psd.has(BackPackUtils.getBackPackItemsKey(),PersistentDataType.STRING)){
+                                psd.set(BackPackUtils.getBackPackItemsKey(),PersistentDataType.STRING,BackPackUtils.getEmptyBackPack());
+                            }
+                            try {
+                                backPackGui.openBackPack(player,mapPopulators.getBackpackFarming());
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            } catch (ClassNotFoundException e) {
+                                throw new RuntimeException(e);
+                            }
                             player.sendMessage("DEBUG: BackPackFarmer angefragt");
                             break;
 
                         case BackPackUtils.fisherBackPack:
+                            if (!psd.has(BackPackUtils.getBackPackItemsKey(),PersistentDataType.STRING)){
+                                psd.set(BackPackUtils.getBackPackItemsKey(),PersistentDataType.STRING,BackPackUtils.getEmptyBackPack());
+                            }
                             //TODO: Fischer entwerfen
                             player.sendMessage("Noch nicht vorhanden");
                             break;
 
-                        case BackPackUtils.woodcutterBackPack:
-                            backPackGui.openBackPack(player,mapPopulators.getBackpackWoodcutting());
-                            player.sendMessage("Noch nicht vorhanden");
+                        case BackPackUtils.woodcutterBackPack:if (!psd.has(BackPackUtils.getBackPackItemsKey(),PersistentDataType.STRING)){
+                            psd.set(BackPackUtils.getBackPackItemsKey(),PersistentDataType.STRING,BackPackUtils.getEmptyBackPack());
+                        }
+
+                            try {
+                                backPackGui.openBackPack(player,mapPopulators.getBackpackWoodcutting());
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            } catch (ClassNotFoundException e) {
+                                throw new RuntimeException(e);
+                            }
+                            player.sendMessage("DEBUG: BackPackWoodcutter angefragt");
                             break;
 
                         case BackPackUtils.hunterBackPack:
+                            if (!psd.has(BackPackUtils.getBackPackItemsKey(),PersistentDataType.STRING)){
+                                psd.set(BackPackUtils.getBackPackItemsKey(),PersistentDataType.STRING,BackPackUtils.getEmptyBackPack());
+                            }
                             player.sendMessage("Noch nicht vorhanden");
                             break;
 

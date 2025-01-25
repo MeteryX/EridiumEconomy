@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class HuntingListener implements Listener {
 
@@ -35,10 +36,10 @@ public class HuntingListener implements Listener {
         Player player = event.getEntity().getKiller();
 
         if (player!=null) {
-            HashMap<UUID, Long> lastBlockBreak = handler.getLastBlockBreakTime();
+            ConcurrentHashMap<UUID, Long> lastBlockBreak = handler.getLastBlockBreakTime();
             lastBlockBreak.put(player.getUniqueId(),System.currentTimeMillis());
             handler.setLastBlockBreakTime(lastBlockBreak);
-            PlayerJobStatModel jobsStats = jobsDatabase.findJobsDataByUUID(String.valueOf(player.getUniqueId()));
+            PlayerJobStatModel jobsStats = plugin.getLocalJobStats().get(player);
             if (huntingEntities.containsKey(mob)) {
                 handler.addMoneyAndEXP(player, huntingEntities.get(mob) + (huntingEntities.get(mob) * jobsStats.getHunterLevel() * 0.3), huntingEntities.get(mob) * (jobsStats.getHunterLevel() * 0.7), "hunting",jobsStats );
             }

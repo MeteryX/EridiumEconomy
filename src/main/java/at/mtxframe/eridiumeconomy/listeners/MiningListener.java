@@ -42,7 +42,7 @@ public class MiningListener implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlock();
         Material material = block.getType();
-        PlayerJobStatModel jobsStats = jobsDatabase.findJobsDataByUUID(String.valueOf(player.getUniqueId()));
+        PlayerJobStatModel jobsStats = plugin.getLocalJobStats().get(player);
 
         Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             long currentTime = System.currentTimeMillis();

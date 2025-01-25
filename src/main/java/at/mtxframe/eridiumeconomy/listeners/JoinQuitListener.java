@@ -4,9 +4,7 @@ import at.mtxframe.eridiumeconomy.EridiumEconomy;
 import at.mtxframe.eridiumeconomy.backpack.BackPackUtils;
 import at.mtxframe.mtxframe.MtxFrame;
 import at.mtxframe.mtxframe.database.DatabaseJobs;
-import at.mtxframe.mtxframe.handlers.DbJobsHandler;
 import at.mtxframe.mtxframe.models.PlayerJobStatModel;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,6 +21,7 @@ import java.util.HashMap;
 public class JoinQuitListener implements Listener {
 
     EridiumEconomy plugin;
+    MtxFrame frame = MtxFrame.getPlugin();
     HashMap<Player, PlayerJobStatModel> localJobStats = new HashMap<>();
     DatabaseJobs dbJobs = new DatabaseJobs();
     BackPackUtils backPackUtils = new BackPackUtils();
@@ -34,9 +33,16 @@ public class JoinQuitListener implements Listener {
     public  void onPlayerJoin(PlayerJoinEvent event) throws SQLException {
         Player player = event.getPlayer();
         localJobStats = plugin.getLocalJobStats();
-        PlayerJobStatModel playerStats = dbJobs.findJobsDataByUUID(String.valueOf(player.getUniqueId()));
-        localJobStats.put(player,playerStats);
-        plugin.setLocalJobStats(localJobStats);
+        if(dbJobs.findJobsDataByUUID(String.valueOf(player.getUniqueId())) != null) {
+            PlayerJobStatModel playerStats = dbJobs.findJobsDataByUUID(String.valueOf(player.getUniqueId()));
+            localJobStats.put(player,playerStats);
+            plugin.setLocalJobStats(localJobStats);
+        } else if (dbJobs.findJobsDataByUUID(String.valueOf(player.getUniqueId())) == null){
+            PlayerJobStatModel playerStats = new PlayerJobStatModel(player.getUniqueId().toString(), 1, 0.00, 1, 0.00, 1, 0.00, 1, 0.00, 1, 0.00);
+            dbJobs.createPlayerJobStats(playerStats, playerStats.getUuid());
+            localJobStats.put(player,playerStats);
+            plugin.setLocalJobStats(localJobStats);
+        }
         PersistentDataContainer psd = player.getPersistentDataContainer();
         if (!(psd.has(BackPackUtils.backPackKey,PersistentDataType.STRING))){
             psd.set(BackPackUtils.backPackKey,PersistentDataType.STRING,BackPackUtils.getnoActiveBackPack());
